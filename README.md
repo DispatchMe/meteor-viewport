@@ -1,4 +1,4 @@
-Viewport
+Viewport [![Build Status](https://travis-ci.org/DispatchMe/meteor-viewport.svg?branch=master)](https://travis-ci.org/DispatchMe/meteor-viewport)
 ======
 
 ##Usage
