@@ -17,9 +17,11 @@ Transition.none = function (current, next, options, callback) {
     return;
   }
 
+  var viewport = this;
+
   next.on('rendered', function () {
     next.emit('willMount', next);
-    next.attach(this.view);
+    next.attach(viewport.view);
     next.emit('didMount', next);
 
     if (callback) callback();
