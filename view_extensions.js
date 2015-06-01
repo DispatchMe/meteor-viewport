@@ -13,6 +13,15 @@ Blaze.View.prototype._prepareDataContext = function () {
 };
 
 /**
+ * Get the data context.
+ */
+Blaze.View.prototype.getData = function () {
+  var self = this;
+  self._v_dataFuncDep.depend();
+  return _.extend({}, self._v_dataFunc(), self._v_extendedDataVar.get());
+};
+
+/**
  * Set the data context.
  * @param {Object||Function} data The data context to set
  * @param {Boolean} extend Extend the data context with this data
@@ -90,9 +99,7 @@ Blaze.View.prototype.render = function () {
   self._prepareDataContext();
 
   var content = Blaze._TemplateWith(function () {
-    self._v_dataFuncDep.depend();
-
-    return _.extend({}, self._v_dataFunc(), self._v_extendedDataVar.get());
+    return self.getData();
   }, function () {
     return self;
   });
