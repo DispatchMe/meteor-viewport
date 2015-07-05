@@ -24,6 +24,14 @@ Viewport.emit = Viewport._emitter.emit.bind(Viewport._emitter);
 Viewport.on = Viewport._emitter.on.bind(Viewport._emitter);
 Viewport.once = Viewport._emitter.once.bind(Viewport._emitter);
 
+Viewport.isTransitionEnabled = true;
+Viewport.disableTransition = function () {
+  Viewport.isTransitionEnabled = false;
+}
+Viewport.enableTransition = function () {
+  Viewport.isTransitionEnabled = true;
+}
+
 Viewport.prototype.goTo = function (nextTemplate, options /** callback **/) {
   var self = this;
 
@@ -42,7 +50,7 @@ Viewport.prototype.goTo = function (nextTemplate, options /** callback **/) {
       .setData({transitioning: true}, true);
   }
 
-  var transition = options.transition || Transition.none;
+  var transition = (Viewport.isTransitionEnabled && options.transition) || Transition.none;
 
   // If there is a current view in the viewport pause it's reactivity
   //if (self.currentView) self.currentView.pause();
