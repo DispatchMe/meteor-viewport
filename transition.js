@@ -5,6 +5,49 @@ Transition = Viewport.Transition;
 var DURATION = 300;
 var QUADRATIC_EASE = [0.1, 0.7, 0.1, 1];
 
+var VENDOR_PREFIXES = ['', 'webkit', 'moz', 'MS', 'ms', 'o'];
+var _prefixLookup = {};
+/**
+ * Get the prefixed property name.
+ * @param {String} property
+ * @returns {String} prefixed
+ */
+var prefixed = function (property) {
+  if (_prefixLookup[property]) return _prefixLookup[property];
+
+  if (property in document.documentElement.style) {
+    _prefixLookup[property] = property;
+    return property;
+  }
+
+  var prefix, prop;
+
+  var camelProp = property[0].toUpperCase() + property.slice(1);
+  for (var i = 0, len = VENDOR_PREFIXES.length; i < len; i++) {
+    prefix = VENDOR_PREFIXES[i];
+    prop = (prefix) ? prefix + camelProp : property;
+
+    if (prop in document.documentElement.style) {
+      _prefixLookup[property] = prop;
+      return prop;
+    }
+  }
+
+  return undefined;
+};
+
+var TRANSFORM_KEY = prefixed('transform');
+/**
+ * Set the transform on an element.
+ */
+var transform = function (elements, transform) {
+  if (!(elements instanceof Array)) elements = [elements];
+
+  elements.forEach(function (item) {
+    item.style[TRANSFORM_KEY] = transform;
+  });
+};
+
 Transition.none = function (current, next, options, callback) {
   if (current) {
     current.emit('willUnmount', current);
@@ -75,7 +118,7 @@ Transition.slideX = function (current, next, options, callback) {
     // it does not flash on the screen in the wrong place.
     var startTranslateX = window.innerWidth;
     if (options.reverse) startTranslateX *= -1;
-    Tools.transform(next.nodes(), 'translateX(' + startTranslateX + 'px)');
+    transform(next.nodes(), 'translateX(' + startTranslateX + 'px)');
 
     next.emit('willMount', next);
     next.attach(viewport.view);
@@ -131,7 +174,7 @@ Transition.slideY = function (current, next, options, callback) {
 
     // Set the transform before the attaching the next page so
     // it does not flash on the screen in the wrong place.
-    Tools.transform(next.nodes(), 'translateY(' + window.innerHeight + 'px)');
+    transform(next.nodes(), 'translateY(' + window.innerHeight + 'px)');
     next.attach(viewport.view);
 
     slideNodesY(next.nodes(), options, function () {
