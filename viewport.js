@@ -25,14 +25,16 @@ Viewport.on = Viewport._emitter.on.bind(Viewport._emitter);
 Viewport.once = Viewport._emitter.once.bind(Viewport._emitter);
 
 Viewport.isTransitionEnabled = true;
+
 Viewport.disableTransition = function () {
   Viewport.isTransitionEnabled = false;
-}
+};
+
 Viewport.enableTransition = function () {
   Viewport.isTransitionEnabled = true;
-}
+};
 
-Viewport.prototype.goTo = function (nextTemplate, options /** callback **/) {
+Viewport.prototype.goTo = function (nextTemplate, options /** callback **/ ) {
   var self = this;
 
   // The callback is the last argument that is a function
@@ -47,7 +49,9 @@ Viewport.prototype.goTo = function (nextTemplate, options /** callback **/) {
 
   if (nextTemplate) {
     nextView = Viewport.view.create(nextTemplate, options)
-      .setData({transitioning: true}, true);
+      .setData({
+        transitioning: true
+      }, true);
   }
 
   var transition = (Viewport.isTransitionEnabled && options.transition) || Transition.none;
@@ -66,7 +70,9 @@ Viewport.prototype.goTo = function (nextTemplate, options /** callback **/) {
     self.currentView = nextView;
 
     if (nextView) {
-      nextView.setData({transitioning: false}, true);
+      nextView.setData({
+        transitioning: false
+      }, true);
     }
 
     Viewport.emit('didTransition');
