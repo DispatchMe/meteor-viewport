@@ -2,7 +2,7 @@ Package.describe({
   name: 'dispatch:viewport',
   summary: 'View manager that supports transition multiple viewports on a page.',
   git: 'https://github.com/DispatchMe/meteor-viewport.git',
-  version: '0.0.3'
+  version: '1.0.0'
 });
 
 Package.onUse(function (api) {
