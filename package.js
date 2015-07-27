@@ -11,16 +11,15 @@ Package.onUse(function (api) {
   api.use([
     // core
     'blaze',
-    'reactive-var',
     'templating',
 
     // atmosphere
+    'dispatch:view-extensions@0.0.1',
     'percolate:velocityjs@1.2.1',
     'raix:eventemitter@0.1.2'
   ], 'web');
 
   api.addFiles([
-    'view_extensions.js',
     'viewport.html',
     'viewport.js',
     'transition.js'
@@ -30,15 +29,16 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
+  api.use('sanjo:jasmine@0.14.0');
+
   api.use([
     'templating',
-    'test-helpers',
-    'tinytest',
     'dispatch:viewport'
   ], 'web');
 
   api.addFiles([
-    'tests.html',
-    'tests.js'
+    'tests/helpers.js',
+    'tests/templates.html',
+    'tests/viewport.js'
   ], 'web');
 });

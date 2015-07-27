@@ -1,0 +1,37 @@
+machine:
+
+  java:
+    version: oraclejdk8
+
+  node:
+    version: 0.10.36
+
+dependencies:
+  cache_directories:
+    - "~/.meteor"
+    - "~/.npm"
+    - "~/_opt"
+
+  # Everything that should be cached must be installed here
+  override:
+
+    # Install Velocity CLI
+    - npm install -g velocity-cli
+
+    # Install JSHint
+    - npm install -g jshint
+
+    # -- CACHE METEOR --
+    # Restore meteor symlink when Meteor was restored from the cache
+    - if [ -d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
+    # Download Meteor if isn't already installed via the cache
+    - if [ ! -e $HOME/.meteor/meteor ]; then curl https://install.meteor.com | sh; fi
+
+test:
+  override:
+
+    # JSHint checks
+    - jshint .
+
+    # Run Velocity package tests
+    - velocity test-package ./ --ci
